@@ -1,7 +1,6 @@
-
 :root {
-    --section-overlay: rgba(0,0,0, 0.7);
-    --background-overlay: rgba(0,0,0, 0.2);
+    --section-overlay: rgba(0, 0, 0, 0.7);
+    --background-overlay: rgba(0, 0, 0, 0.2)
 }
 
 * {
@@ -31,11 +30,12 @@
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     flex-direction: column;
     padding: 1rem;
-
 }
+
+/* Top  */
 
 .section {
     width: 100%;
@@ -53,7 +53,7 @@
 
 .section__inputs>input {
     border: 0.8px solid white;
-    border-radius: 0.8rem;
+    border-radius: 0.4rem;
     background-color: transparent;
     color: white;
     padding: 0.5rem;
@@ -68,7 +68,7 @@
 .section__inputs>button {
     padding: 10px 50px;
     border: none;
-    border-radius: 0.4rem;
+    border-radius: 00.4rem;
     font-size: 20px;
     font-weight: 500;
     background-color: white;
@@ -76,7 +76,7 @@
 
 .section__inputs>button:hover {
     cursor: pointer;
-    background-color: lightgrey;
+    background-color: lightgray;
 }
 
 .icon {
@@ -84,7 +84,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
 }
 
 .icon>h3 {

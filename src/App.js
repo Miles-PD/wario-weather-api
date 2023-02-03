@@ -3,6 +3,9 @@ import coldBg from './assets/cold.jpg';
 import Descriptions from './components/Descriptions';
 import { useEffect, useState } from 'react';
 import { getFormattedWeatherData } from './weatherService';
+import "./App.css"
+import Canvas from './components/Canvas';
+import * as constants from './constants.jsx'
 
 function App() {
 
@@ -13,6 +16,8 @@ function App() {
 
 
   useEffect(() => {
+
+    
 
     const fetchWeatherData = async () => {
       
@@ -47,10 +52,12 @@ function App() {
   }
 
   return (
-    <div className="app" style={{ backgroundImage: `url(${bg})` }}>
-    <div className='overlay'>
+    <div className="app">
+        <Canvas width={constants.CANVAS_WIDTH} height={constants.CANVAS_HEIGHT}></Canvas>
+      <div className='overlay'>
+  
     { weather && (
-            <div className='container'>
+          <div className='container'>
         
             <div className='section section__inputs'>
               <input onKeyDown={enterKeyPressed} type="text" name="city" placeholder='Enter city name...' />
@@ -72,8 +79,9 @@ function App() {
     
           </div>
     )}
+      </div>
     </div>
-  </div>
+    
   );
 }
 

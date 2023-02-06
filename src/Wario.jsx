@@ -1,8 +1,12 @@
 import * as constants from './constants.jsx'
 
-const Wario = () => {
+function Wario() {
 
-     
+     const draw = () => {
+
+        
+
+     }
    
 
     return (

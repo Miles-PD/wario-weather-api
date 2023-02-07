@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import * as constants from '../constants.js'
 
 export function useOnDraw(onDraw) {
 
@@ -6,6 +7,15 @@ export function useOnDraw(onDraw) {
 
     const isDrawingRef = useRef(false);
     
+    useEffect(() => {
+
+        if (isDrawingRef.current) {
+            const ctx = canvasRef.current.getContext('2d');
+            if (onDraw) onDraw(ctx);
+        }
+
+    }, [onDraw])
+
 
     function setCanvasRef(ref) {
 
@@ -14,10 +24,7 @@ export function useOnDraw(onDraw) {
         isDrawingRef.current = true;
     }
 
-    if (isDrawingRef.current) {
-        const ctx = canvasRef.current.getContext('2d');
-        if (onDraw) onDraw(ctx);
-    }
+
 
 
     return setCanvasRef;

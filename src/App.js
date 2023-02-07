@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { getFormattedWeatherData } from './weatherService';
 import "./App.css"
 import Canvas from './components/Canvas';
-import * as constants from './constants.jsx'
+import * as constants from './constants.js'
 
 function App() {
 

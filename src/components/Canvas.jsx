@@ -1,9 +1,11 @@
 import { useOnDraw } from "./Hooks"
-import * as constants from '../constants.jsx'
+import * as constants from '../constants.js'
+import { useEffect } from "react";
 
 // Canvas and game logic for display
 
 const Canvas = ({ width, height }) => {
+    
 
     const setCanvasRef = useOnDraw(onDraw);
     
@@ -11,13 +13,15 @@ const Canvas = ({ width, height }) => {
     function onDraw(ctx) {
         
         /// fill bg with generic color just in case
-        ctx.fillStyle = "#abfcff";
-        ctx.fillRect(0,0, constants.CANVAS_WIDTH, constants.CANVAS_HEIGHT);
+      
 
         // draw
-        //ctx.drawImage(constants.BG_SUNNY, constants.BG_SUNNY_X, constants.BG_SUNNY_Y, constants.BG_SUNNY_WIDTH, constants.BG_SUNNY_HEIGHT);
+        constants.BG_SUNNY.onload = () => {
+        ctx.drawImage(constants.BG_SUNNY, constants.BG_SUNNY_X, constants.BG_SUNNY_Y); }
 
     }
+
+
 
     return (
         <canvas 

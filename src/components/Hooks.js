@@ -11,10 +11,18 @@ export function useOnDraw(onDraw) {
 
         if (isDrawingRef.current) {
             const ctx = canvasRef.current.getContext('2d');
-            if (onDraw) onDraw(ctx);
+            if (ctx) {
+
+                 setInterval(() => {
+                    
+                     onDraw(ctx);
+                    
+                 }, constants.INTERVAL)
+    
+            }
         }
 
-    }, [onDraw])
+    }, [])
 
 
     function setCanvasRef(ref) {

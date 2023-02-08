@@ -1,12 +1,13 @@
-import { useOnDraw } from "./Hooks"
+
 import * as constants from '../constants.js'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Canvas and game logic for display
 
 const Canvas = ({ width, height }) => {
 
-    
+    const canvasRef = useRef(null);
+    const requestIdRef = useRef(null);
 
     // background graphic stuff
     const [currentBG, setCurrentBG] = useState('sunny');
@@ -28,20 +29,6 @@ const Canvas = ({ width, height }) => {
         height: BG_HEIGHT
     }
     
-
-    const setCanvasRef = useOnDraw(onDraw);
-    
-
-    function onDraw(ctx) {
-
-        /// clear screen each frame
-        ctx.clearRect(0,0,constants.CANVAS_WIDTH,constants.CANVAS_HEIGHT);
-
-        // draw
-        handleBackground(ctx);
-
-    }
-
     const handleBackground = (ctx) => {
         if (background.x1 <= -BG_WIDTH + SCROLL_SPEED) background.x1 = BG_WIDTH;  // push bg iteration back to front of next bg at 0,0 if it is completely off screen
             else background.x1 -= SCROLL_SPEED;                                   // adding scroll speed helps accomodate for pixels between both bgs
@@ -51,6 +38,36 @@ const Canvas = ({ width, height }) => {
         ctx.drawImage(BG, background.x1, BG_Y, BG_WIDTH, BG_HEIGHT); 
         ctx.drawImage(BG, background.x2, BG_Y, BG_WIDTH, BG_HEIGHT)
     }
+    
+    
+
+    const drawFrame = () => {
+
+        const ctx = canvasRef.current.getContext('2d');
+
+        /// clear screen each frame
+        ctx.clearRect(0,0,constants.CANVAS_WIDTH,constants.CANVAS_HEIGHT);
+
+        // draw
+        handleBackground(ctx);
+
+    }
+
+    const tick = () => {
+        if (!canvasRef.current) return;
+        drawFrame();
+        requestAnimationFrame(tick)
+    }
+
+
+    useEffect(() => {
+
+        requestIdRef.current = requestAnimationFrame(tick)
+
+        return () => {
+            cancelAnimationFrame(requestIdRef.current)
+        };
+    }, [])
 
 
 
@@ -59,7 +76,7 @@ const Canvas = ({ width, height }) => {
             width={width} 
             height={height}
             style={canvasStyle}
-            ref={setCanvasRef}
+            ref={canvasRef}
              />
     )
 }

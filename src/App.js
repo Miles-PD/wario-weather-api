@@ -1,5 +1,3 @@
-import hotBg from './assets/hot.jpg';
-import coldBg from './assets/cold.jpg';
 import Descriptions from './components/Descriptions';
 import { useEffect, useState } from 'react';
 import { getFormattedWeatherData } from './weatherService';
@@ -12,7 +10,7 @@ function App() {
   const [city, setCity] = useState('Paris');
   const [weather, setWeather] = useState(null);
   const [units, setUnits] = useState('metric');
-  const [bg, setBg] = useState('hotBg')
+  //const [bg, setBg] = useState('hotBg')
 
 
   useEffect(() => {
@@ -26,14 +24,14 @@ function App() {
 
       const threshold = units === "metric" ? 20 : 60;
       if (data.temp <= threshold) {
-        setBg(coldBg);
-      }
-      else setBg(hotBg)
+      //   setBg(coldBg);
+       }
+       //else setBg(hotBg)
     }
 
     fetchWeatherData();
 
-  }, [city, units]) 
+  }, [city, units])
 
   const handleUnitsClick = (e) => {
     const button = e.currentTarget;

@@ -1,6 +1,7 @@
 
 import * as constants from '../constants.js'
 import { useEffect, useRef, useState } from "react";
+import Wario from '../Wario.jsx';
 
 // Canvas and game logic for display
 
@@ -8,6 +9,14 @@ const Canvas = ({ width, height }) => {
 
     const canvasRef = useRef(null);
     const requestIdRef = useRef(null);
+
+    let frame = 0;  // frames canvas is drawn to screen
+
+    const [currentFrame, setCurrentFrame] = useState(0); // used to determine current frame for current Wario animation
+    const [warioAnim, setWarioAnim] = useState('walk')
+
+    // Wario animation frame counts
+    const walk_frames = 9;
 
     // background graphic stuff
     const [currentBG, setCurrentBG] = useState('sunny');
@@ -20,6 +29,7 @@ const Canvas = ({ width, height }) => {
     const BG_HEIGHT = 480;
     const BG_X = 0;
     const BG_Y = 0;
+
 
     const background = {    //two bgs, one placed the same width in front of the other
         x1: 0,
@@ -43,19 +53,26 @@ const Canvas = ({ width, height }) => {
 
     const drawFrame = () => {
 
-        const ctx = canvasRef.current.getContext('2d');
+        const ctx = canvasRef.current.getContext('2d');  
 
         /// clear screen each frame
         ctx.clearRect(0,0,constants.CANVAS_WIDTH,constants.CANVAS_HEIGHT);
 
-        // draw
+        // draw graphics
         handleBackground(ctx);
+        Wario(ctx, 'walk', frame, currentFrame);
+
+
+        
 
     }
+
+    
 
     const tick = () => {
         if (!canvasRef.current) return;
         drawFrame();
+        frame++;
         requestAnimationFrame(tick)
     }
 

@@ -1,4 +1,3 @@
-
 import * as constants from '../constants.js'
 import { useEffect, useRef, useState } from "react";
 import Wario from '../Wario.jsx';
@@ -10,9 +9,10 @@ const Canvas = ({ width, height }) => {
     const canvasRef = useRef(null);
     const requestIdRef = useRef(null);
 
-    let frame = 0;  // frames canvas is drawn to screen
+    let framerate = 0 //frames depicting loop cycle for when canvas is drawn to screen
+    let currentFrame = 0;  // Wario's current animation frame
 
-    const [currentFrame, setCurrentFrame] = useState(0); // used to determine current frame for current Wario animation
+    //const [currentFrame, setCurrentFrame] = useState(0); // used to determine current frame for current Wario animation
     const [warioAnim, setWarioAnim] = useState('walk')
 
     // Wario animation frame counts
@@ -60,7 +60,13 @@ const Canvas = ({ width, height }) => {
 
         // draw graphics
         handleBackground(ctx);
-        Wario(ctx, 'walk', frame, currentFrame);
+        Wario(ctx, 'walk', currentFrame);
+
+        if (currentFrame >= walk_frames) currentFrame = 0;
+        else if (framerate%5 == 0) currentFrame++;
+
+        
+        
 
 
         
@@ -72,14 +78,16 @@ const Canvas = ({ width, height }) => {
     const tick = () => {
         if (!canvasRef.current) return;
         drawFrame();
-        frame++;
+        framerate++;
         requestAnimationFrame(tick)
+
     }
 
 
     useEffect(() => {
 
         requestIdRef.current = requestAnimationFrame(tick)
+
 
         return () => {
             cancelAnimationFrame(requestIdRef.current)

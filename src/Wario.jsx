@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 
 export default function Wario(ctx, warioAnim, currentFrame) {
 
@@ -14,5 +12,7 @@ export default function Wario(ctx, warioAnim, currentFrame) {
     const sprite_height = sheet_height * 1.5;
 
     ctx.drawImage(warioSprite, currentFrame * sheet_width, 0, sheet_width, sheet_height, posx, posy, sprite_width * 1.5, sprite_height * 1.5);
+
+
     
 }

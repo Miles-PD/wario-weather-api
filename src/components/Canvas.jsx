@@ -20,6 +20,8 @@ const Canvas = ({ width, height }) => {
 
     // background graphic stuff
     const [currentBG, setCurrentBG] = useState('sunny');
+    const [currentFG, setCurrentFG] = useState('sunny')
+    const [weatherOverlay, setWeatherOverlay] = useState('blizzard')
 
     const SCROLL_SPEED = 1; //default speed to scroll backgrounds
 
@@ -27,9 +29,20 @@ const Canvas = ({ width, height }) => {
     BG.src = `./images/${currentBG}.png`;
     const BG_WIDTH = 640;
     const BG_HEIGHT = 480;
-    const BG_X = 0;
     const BG_Y = 0;
 
+    const FG = new Image();
+    FG.src = `./images/ground_${currentFG}.png`;
+    const FG_WIDTH = 640;
+    const FG_HEIGHT = 480;
+    const FG_Y = 0;
+
+    const WO = new Image();
+    WO.src = `./images/snowstorm.gif`;
+    const WO_WIDTH = 640;
+    const WO_HEIGHT = 480;
+    const WO_X = 0;
+    const WO_Y = 0;
 
     const background = {    //two bgs, one placed the same width in front of the other
         x1: 0,
@@ -38,17 +51,44 @@ const Canvas = ({ width, height }) => {
         width: BG_WIDTH,
         height: BG_HEIGHT
     }
+
+    const foreground = {    
+        x1: 0,
+        x2: FG_WIDTH,
+        y: 0,
+        width: FG_WIDTH,
+        height: FG_HEIGHT
+    }
     
     const handleBackground = (ctx) => {
+
         if (background.x1 <= -BG_WIDTH + SCROLL_SPEED) background.x1 = BG_WIDTH;  // push bg iteration back to front of next bg at 0,0 if it is completely off screen
-            else background.x1 -= SCROLL_SPEED;                                   // adding scroll speed helps accomodate for pixels between both bgs
+        else background.x1 -= SCROLL_SPEED;                                   // adding scroll speed helps accomodate for pixels between both bgs
         if (background.x2 <= -BG_WIDTH + SCROLL_SPEED) background.x2 = BG_WIDTH;
-            else background.x2 -= SCROLL_SPEED;
+        else background.x2 -= SCROLL_SPEED;
 
         ctx.drawImage(BG, background.x1, BG_Y, BG_WIDTH, BG_HEIGHT); 
         ctx.drawImage(BG, background.x2, BG_Y, BG_WIDTH, BG_HEIGHT)
+
+    }
+
+    const handleForeground = (ctx) => {
+
+        if (foreground.x1 <= -FG_WIDTH + SCROLL_SPEED) foreground.x1 = FG_WIDTH;  
+        else foreground.x1 -= SCROLL_SPEED;                                   
+        if (foreground.x2 <= -FG_WIDTH + SCROLL_SPEED) foreground.x2 = FG_WIDTH;
+        else foreground.x2 -= SCROLL_SPEED;
+
+        ctx.drawImage(FG, foreground.x1, FG_Y, FG_WIDTH, FG_HEIGHT); 
+        ctx.drawImage(FG, foreground.x2, FG_Y, FG_WIDTH, FG_HEIGHT)
     }
     
+    const handleWeatherOverlay = (ctx) => {
+
+        ctx.drawImage(WO, WO_X, WO_Y, WO_WIDTH, WO_HEIGHT); 
+
+    }
+
     
 
     const drawFrame = () => {
@@ -60,15 +100,14 @@ const Canvas = ({ width, height }) => {
 
         // draw graphics
         handleBackground(ctx);
-        Wario(ctx, 'walk', currentFrame);
+        handleForeground(ctx);
+
+        Wario(ctx, 'walk', currentFrame, framerate);
 
         if (currentFrame >= walk_frames) currentFrame = 0;
         else if (framerate%5 == 0) currentFrame++;
 
-        
-        
-
-
+        //handleWeatherOverlay(ctx);
         
 
     }

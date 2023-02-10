@@ -1,11 +1,13 @@
 
 export default function Wario(ctx, warioAnim, currentFrame) {
 
+
+
     const warioSprite = new Image();
     warioSprite.src = `./images/wario_${warioAnim}.png`
 
-    const posx = 320;
-    const posy = 200;
+    const posx = 300;
+    const posy = 315;
     const sheet_width = 32;
     const sheet_height = 40;
     const sprite_width = sheet_width * 1.5;

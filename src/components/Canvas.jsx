@@ -11,19 +11,22 @@ const Canvas = ({ width, height }) => {
 
     let framerate = 0 //frames depicting loop cycle for when canvas is drawn to screen
     let currentFrame = 0;  // Wario's current animation frame
+    let framesToAnimate = 0; // how many frames to play per animation
+    let reactionFrames = 0;
 
-    //const [currentFrame, setCurrentFrame] = useState(0); // used to determine current frame for current Wario animation
-    const [warioAnim, setWarioAnim] = useState('walk')
+    const [warioAnim, setWarioAnim] = useState('snowwalk')
 
     // Wario animation frame counts
     const walk_frames = 9;
+    const snowwalk_frames = 4;
+    const snowreact_frames = 20;
 
     // background graphic stuff
     const [currentBG, setCurrentBG] = useState('sunny');
     const [currentFG, setCurrentFG] = useState('sunny')
     const [weatherOverlay, setWeatherOverlay] = useState('blizzard')
 
-    const SCROLL_SPEED = 1; //default speed to scroll backgrounds
+    let SCROLL_SPEED = 1; //default speed to scroll backgrounds
 
     const BG = new Image();
     BG.src = `./images/${currentBG}.png`;
@@ -60,7 +63,7 @@ const Canvas = ({ width, height }) => {
         height: FG_HEIGHT
     }
     
-    const handleBackground = (ctx) => {
+    const handleBackground = (ctx, SCROLL_SPEED) => {
 
         if (background.x1 <= -BG_WIDTH + SCROLL_SPEED) background.x1 = BG_WIDTH;  // push bg iteration back to front of next bg at 0,0 if it is completely off screen
         else background.x1 -= SCROLL_SPEED;                                   // adding scroll speed helps accomodate for pixels between both bgs
@@ -72,7 +75,7 @@ const Canvas = ({ width, height }) => {
 
     }
 
-    const handleForeground = (ctx) => {
+    const handleForeground = (ctx, SCROLL_SPEED) => {
 
         if (foreground.x1 <= -FG_WIDTH + SCROLL_SPEED) foreground.x1 = FG_WIDTH;  
         else foreground.x1 -= SCROLL_SPEED;                                   
@@ -89,6 +92,29 @@ const Canvas = ({ width, height }) => {
 
     }
 
+    //determine frame count for looping animations
+    const determineFrames = () => {
+
+        if (warioAnim === 'walk')
+        framesToAnimate = walk_frames;
+        else if (warioAnim === 'snowwalk') 
+        framesToAnimate = snowwalk_frames
+        else if (warioAnim === 'snowreact')
+        framesToAnimate = snowreact_frames
+        
+        return framesToAnimate
+    }
+
+    // const determineReaction = () => {
+        
+    //     if (reactionFrames >= snowreact_frames){
+    //         setWarioAnim('snowwalk')
+    //         reactionFrames = 0
+    //         }
+    // }
+
+
+
     
 
     const drawFrame = () => {
@@ -99,16 +125,18 @@ const Canvas = ({ width, height }) => {
         ctx.clearRect(0,0,constants.CANVAS_WIDTH,constants.CANVAS_HEIGHT);
 
         // draw graphics
-        handleBackground(ctx);
-        handleForeground(ctx);
+        handleBackground(ctx, (warioAnim === 'snowreact' ? SCROLL_SPEED * 0 : SCROLL_SPEED)); //pause movement if Wario is reacting
+        handleForeground(ctx, (warioAnim === 'snowreact' ? SCROLL_SPEED * 0 : SCROLL_SPEED));
 
-        Wario(ctx, 'walk', currentFrame, framerate);
 
-        if (currentFrame >= walk_frames) currentFrame = 0;
-        else if (framerate%5 == 0) currentFrame++;
+        Wario(ctx, warioAnim, currentFrame, framerate);
+
+        if (currentFrame >= determineFrames(warioAnim)) currentFrame = 0;
+        else if (framerate%7 === 0) currentFrame++;
+
+        
 
         //handleWeatherOverlay(ctx);
-        
 
     }
 

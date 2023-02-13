@@ -1,5 +1,6 @@
 import Descriptions from './components/Descriptions';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import useState from 'react-usestateref';
 import { getFormattedWeatherData } from './weatherService';
 import "./App.css"
 import Canvas from './components/Canvas';
@@ -12,6 +13,14 @@ function App() {
   const [units, setUnits] = useState('metric');
   //const [bg, setBg] = useState('hotBg')
 
+  // background graphic stuff
+  var [currentBG, setCurrentBG, currentBGref] = useState(null);
+  var [currentFG, setCurrentFG, currentFGref] = useState(null)
+  const [weatherOverlay, setWeatherOverlay] = useState('blizzard')
+
+
+
+  
 
   useEffect(() => {
 
@@ -22,16 +31,30 @@ function App() {
       const data = await getFormattedWeatherData(city, units);
       setWeather(data);
 
-      const threshold = units === "metric" ? 20 : 60;
-      if (data.temp <= threshold) {
-      //   setBg(coldBg);
-       }
-       //else setBg(hotBg)
+      function findBGandFG() {
+
+        const threshold = units === "metric" ? 20 : 60;
+    
+        if (data.temp <= threshold) {
+        setCurrentBG('snow');
+        setCurrentFG('snow');
+        }
+        else {
+          setCurrentBG('sunny');
+        setCurrentFG('sunny');
+        }
+
+      }
+
+      findBGandFG();
+
     }
 
-    fetchWeatherData();
 
-  }, [city, units])
+    fetchWeatherData();
+    console.log(currentBG, 'Effect')
+
+  }, [city, units, currentBGref.current, currentFGref.current])
 
   const handleUnitsClick = (e) => {
     const button = e.currentTarget;
@@ -51,7 +74,7 @@ function App() {
 
   return (
     <div className="app">
-        <Canvas width={constants.CANVAS_WIDTH} height={constants.CANVAS_HEIGHT}></Canvas>
+        { weather && ( <Canvas width={640} height={480} currentBG={currentBGref.current} currentFG={currentFG}></Canvas> )}
       <div className='overlay'>
   
     { weather && (

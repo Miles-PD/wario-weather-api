@@ -1,10 +1,11 @@
 import * as constants from '../constants.js'
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import useState from 'react-usestateref';
 import Wario from '../Wario.jsx';
 
 // Canvas and game logic for display
 
-const Canvas = ({ width, height }) => {
+const Canvas = ({ width, height, currentBG, currentFG }) => {
 
     const canvasRef = useRef(null);
     const requestIdRef = useRef(null);
@@ -14,17 +15,15 @@ const Canvas = ({ width, height }) => {
     let framesToAnimate = 0; // how many frames to play per animation
     let reactionFrames = 0;
 
-    const [warioAnim, setWarioAnim] = useState('snowwalk')
+
+    const [warioAnim, setWarioAnim] = useState('walk')
 
     // Wario animation frame counts
     const walk_frames = 9;
     const snowwalk_frames = 4;
     const snowreact_frames = 20;
 
-    // background graphic stuff
-    const [currentBG, setCurrentBG] = useState('sunny');
-    const [currentFG, setCurrentFG] = useState('sunny')
-    const [weatherOverlay, setWeatherOverlay] = useState('blizzard')
+
 
     let SCROLL_SPEED = 1; //default speed to scroll backgrounds
 
@@ -152,12 +151,13 @@ const Canvas = ({ width, height }) => {
 
 
     useEffect(() => {
-
+ 
         requestIdRef.current = requestAnimationFrame(tick)
 
 
         return () => {
             cancelAnimationFrame(requestIdRef.current)
+            console.log(currentBG, 'canvas')
         };
     }, [])
 

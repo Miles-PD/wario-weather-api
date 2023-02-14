@@ -1,6 +1,5 @@
 import Descriptions from './components/Descriptions';
-import { useEffect } from 'react';
-import useState from 'react-usestateref';
+import { useEffect, useState } from 'react';
 import { getFormattedWeatherData } from './weatherService';
 import "./App.css"
 import Canvas from './components/Canvas';
@@ -14,8 +13,8 @@ function App() {
   //const [bg, setBg] = useState('hotBg')
 
   // background graphic stuff
-  var [currentBG, setCurrentBG, currentBGref] = useState(null);
-  var [currentFG, setCurrentFG, currentFGref] = useState(null)
+  var [currentBG, setCurrentBG] = useState(null);
+  var [currentFG, setCurrentFG] = useState(null)
   const [weatherOverlay, setWeatherOverlay] = useState('blizzard')
 
 
@@ -54,7 +53,7 @@ function App() {
     fetchWeatherData();
     console.log(currentBG, 'Effect')
 
-  }, [city, units, currentBGref.current, currentFGref.current])
+  }, [city, units, currentBG, currentFG])
 
   const handleUnitsClick = (e) => {
     const button = e.currentTarget;
@@ -74,7 +73,7 @@ function App() {
 
   return (
     <div className="app">
-        { weather && ( <Canvas width={640} height={480} currentBG={currentBGref.current} currentFG={currentFG}></Canvas> )}
+        { weather && ( <Canvas width={640} height={480} currentBG={currentBG} currentFG={currentFG}></Canvas> )}
       <div className='overlay'>
   
     { weather && (

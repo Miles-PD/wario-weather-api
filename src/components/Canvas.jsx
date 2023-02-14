@@ -152,14 +152,14 @@ const Canvas = ({ width, height, currentBG, currentFG }) => {
 
     useEffect(() => {
  
-        requestIdRef.current = requestAnimationFrame(tick)
+       requestIdRef.current = requestAnimationFrame(tick)
 
 
         return () => {
             cancelAnimationFrame(requestIdRef.current)
             console.log(currentBG, 'canvas')
         };
-    }, [])
+    }, [currentBG, currentFG])  // place graphics dependecies so it re-renders each new state mutation
 
 
 

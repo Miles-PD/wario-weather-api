@@ -53,7 +53,7 @@ function App() {
     fetchWeatherData();
     console.log(currentBG, 'Effect')
 
-  }, [city, units, currentBG, currentFG])
+  }, [city, units])
 
   const handleUnitsClick = (e) => {
     const button = e.currentTarget;
